@@ -21,6 +21,9 @@
 	<Instance Name="PocketResource">
 		<Button Style="TradeItemButton" Anchor="L,C" String="[ICON_RES_IRON] IRON" ID="Button"/>
 	</Instance>
+	<Instance Name="PocketTechnology">
+		<Button Style="TradeItemButton" Anchor="L,C" String="Technology" ID="Button"/>
+	</Instance>
 	<Instance Name="PocketVote">
 		<Button Style="TradeItemButton" Anchor="L,C" ID="Button">
 			<Label Offset="5,0" Anchor="L,C" ID="ProposalLabel" TruncateWidth="150"/>
@@ -42,6 +45,11 @@
 		<Container Size="195,24" ID="Container">
 			<Button Style="TradeItemButton" Anchor="L,T" String="[ICON_RES_IRON] IRON" ID="Button"/>
 			<Label String="" Offset="10,0" Anchor="R,C" ID="DurationEdit"/>
+		</Container>
+	</Instance>
+	<Instance Name="TableTechnology">
+		<Container Size="195,24" ID="Container">
+			<Button Style="TradeItemButton" Anchor="L,T" String="Technology" ID="Button"/>
 		</Container>
 	</Instance>
 	<Instance Name="TableVote">
@@ -76,6 +84,8 @@
 					<Stack Anchor="L,T" Offset="0,0" Size="128,0" StackGrowth="Bottom" Padding="0" Hidden="0" ID="UsPocketLuxuryStack"/>
 					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_DIPLO_STRATEGIC_RESOURCES" ID="UsPocketStrategic"/>
 					<Stack Anchor="L,T" Offset="0,0" Size="128,0" StackGrowth="Bottom" Padding="0" Hidden="0" ID="UsPocketStrategicStack"/>
+					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_DIPLO_ITEMS_TECHNOLOGIES" ID="UsPocketTechnology"/>
+					<Stack Anchor="L,T" Offset="0,0" Size="128,0" StackGrowth="Bottom" Padding="0" Hidden="0" ID="UsPocketTechnologyStack"/>
 					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_TRADE_ITEM_VOTES" ID="UsPocketVote"/>
 					<Stack Anchor="L,T" Offset="0,0" Size="128,0" StackGrowth="Bottom" Padding="0" Hidden="0" ID="UsPocketVoteStack"/>
 					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_DIPLO_ALLOW_EMBASSY" ID="UsPocketAllowEmbassy"/>
@@ -124,6 +134,8 @@
 					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_DIPLO_STRATEGIC_RESOURCES" ID="ThemPocketStrategic"/>
 					<Stack Anchor="L,T" Offset="0,0" Size="128,0" StackGrowth="Bottom" Padding="0" Hidden="0" ID="ThemPocketStrategicStack">
                     </Stack>
+					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_DIPLO_ITEMS_TECHNOLOGIES" ID="ThemPocketTechnology"/>
+					<Stack Anchor="L,T" Offset="0,0" Size="128,0" StackGrowth="Bottom" Padding="0" Hidden="0" ID="ThemPocketTechnologyStack"/>
 					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_TRADE_ITEM_VOTES" ID="ThemPocketVote"/>
 					<Stack Anchor="L,T" Offset="0,0" Size="128,0" StackGrowth="Bottom" Padding="0" Hidden="0" ID="ThemPocketVoteStack"/>
 					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_DIPLO_ALLOW_EMBASSY" ID="ThemPocketAllowEmbassy"/>
@@ -185,6 +197,9 @@
 					<Stack Anchor="L,T" Offset="0,4" Size="128,0" StackGrowth="Bottom" Padding="5" Hidden="0" ID="UsTableStrategicStack">
 						<Label Anchor="L,C" Offset="5,0" String="TXT_KEY_DIPLO_STRATEGIC_RESOURCES" Font="TwCenMT14"/>
 					</Stack>
+					<Stack Anchor="L,T" Offset="0,4" Size="128,0" StackGrowth="Bottom" Padding="5" Hidden="0" ID="UsTableTechnologyStack">
+						<Label Anchor="L,C" Offset="5,0" String="TXT_KEY_DIPLO_ITEMS_TECHNOLOGIES" Font="TwCenMT14"/>
+					</Stack>
 					<Stack Anchor="L,T" Offset="0,4" Size="128,0" StackGrowth="Bottom" Padding="5" Hidden="0" ID="UsTableVoteStack">
 						<Label Anchor="L,C" Offset="5,0" String="TXT_KEY_TRADE_ITEM_VOTES" Font="TwCenMT14"/>
 					</Stack>
@@ -241,6 +256,9 @@
 					</Stack>
 					<Stack Anchor="L,T" Offset="0,4" Size="128,0" StackGrowth="Bottom" Padding="5" Hidden="0" ID="ThemTableStrategicStack">
 						<Label Anchor="L,C" Offset="5,0" String="TXT_KEY_DIPLO_STRATEGIC_RESOURCES" Font="TwCenMT14"/>
+					</Stack>
+					<Stack Anchor="L,T" Offset="0,4" Size="128,0" StackGrowth="Bottom" Padding="5" Hidden="0" ID="ThemTableTechnologyStack">
+						<Label Anchor="L,C" Offset="5,0" String="TXT_KEY_DIPLO_ITEMS_TECHNOLOGIES" Font="TwCenMT14"/>
 					</Stack>
 					<Stack Anchor="L,T" Offset="0,4" Size="128,0" StackGrowth="Bottom" Padding="5" Hidden="0" ID="ThemTableVoteStack">
 						<Label Anchor="L,C" Offset="5,0" String="TXT_KEY_TRADE_ITEM_VOTES" Font="TwCenMT14"/>

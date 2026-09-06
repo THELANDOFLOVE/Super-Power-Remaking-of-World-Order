@@ -23,6 +23,7 @@ local print = print
 local insert = table.insert
 local tonumber = tonumber
 local L = Locale.ConvertTextKey
+local TechTradeItem = TradeableItems.TRADE_ITEM_TECHS
 
 Controls.UsGlass = Controls.UsPanel
 Controls.ThemGlass = Controls.ThemPanel
@@ -66,6 +67,10 @@ local g_UsPocketResources = {}
 local g_ThemPocketResources = {}
 local g_UsTableResources = {}
 local g_ThemTableResources = {}
+local g_UsPocketTechs = {}
+local g_ThemPocketTechs = {}
+local g_UsTableTechs = {}
+local g_ThemTableTechs = {}
 local g_TableLeaderButtons = {}
 local g_PocketLeaderButtons = {}
 local g_LeagueVoteList = {}
@@ -99,6 +104,8 @@ local g_SubStacks = {
 	ThemPocketLuxury = Controls.ThemPocketLuxuryStack,
 	UsPocketCities = Controls.UsPocketCitiesStack,
 	ThemPocketCities = Controls.ThemPocketCitiesStack,
+	UsPocketTechnology = Controls.UsPocketTechnologyStack,
+	ThemPocketTechnology = Controls.ThemPocketTechnologyStack,
 
 	UsPocketVote = Controls.UsPocketVoteStack,
 	ThemPocketVote = Controls.ThemPocketVoteStack,
@@ -116,6 +123,8 @@ local g_SubLabels = {
 	ThemPocketLuxury = L"TXT_KEY_DIPLO_ITEMS_LUXURY_RESOURCES",
 	UsPocketCities = L"TXT_KEY_DIPLO_CITIES",
 	ThemPocketCities = L"TXT_KEY_DIPLO_CITIES",
+	UsPocketTechnology = L"TXT_KEY_DIPLO_ITEMS_TECHNOLOGIES",
+	ThemPocketTechnology = L"TXT_KEY_DIPLO_ITEMS_TECHNOLOGIES",
 
 	UsPocketVote = L"TXT_KEY_TRADE_ITEM_VOTES",
 	ThemPocketVote = L"TXT_KEY_TRADE_ITEM_VOTES",
@@ -133,6 +142,8 @@ local g_SubTooltipsYes = {
 	ThemPocketLuxury = L"TXT_KEY_DIPLO_LUX_RESCR_TRADE_YES_THEM",
 	UsPocketCities = L"TXT_KEY_DIPLO_TO_TRADE_CITY_TT",
 	ThemPocketCities = L"TXT_KEY_DIPLO_TO_TRADE_CITY_TT",
+	UsPocketTechnology = L"TXT_KEY_DIPLO_TO_TRADE_TECHNOLOGIES_TRADE_YES",
+	ThemPocketTechnology = L"TXT_KEY_DIPLO_TO_TRADE_TECHNOLOGIES_TRADE_YES_THEM",
 
 	UsPocketVote = L"TXT_KEY_DIPLO_VOTE_TRADE_YES",
 	ThemPocketVote = L"TXT_KEY_DIPLO_VOTE_TRADE_YES_THEM",
@@ -197,6 +208,8 @@ local g_pocketControls = {
 local g_tableControls = {
 	Controls.UsTableVoteStack,
 	Controls.ThemTableVoteStack,
+	Controls.UsTableTechnologyStack,
+	Controls.ThemTableTechnologyStack,
 	Controls.UsTableGold,
 	Controls.ThemTableGold,
 	Controls.UsTableGoldPerTurn,
@@ -224,6 +237,10 @@ local g_stacks = {
 	Controls.ThemPocketVoteStack,
 	Controls.UsTableVoteStack,
 	Controls.ThemTableVoteStack,
+	Controls.UsPocketTechnologyStack,
+	Controls.ThemPocketTechnologyStack,
+	Controls.UsTableTechnologyStack,
+	Controls.ThemTableTechnologyStack,
 	Controls.UsTableCitiesStack,
 	Controls.ThemTableCitiesStack,
 	Controls.UsPocketLeaderStack,
@@ -382,6 +399,14 @@ end
 function DoClearTable()
 	g_UsTableCitiesIM:ResetInstances()
 	g_ThemTableCitiesIM:ResetInstances()
+	for _, instance in pairs( g_UsTableTechs ) do
+		instance.Container:SetHide( true )
+	end
+	for _, instance in pairs( g_ThemTableTechs ) do
+		instance.Container:SetHide( true )
+	end
+	Controls.UsTableTechnologyStack:SetHide( true )
+	Controls.ThemTableTechnologyStack:SetHide( true )
 	if IsCiv5BNW then
 		g_UsTableVoteIM:ResetInstances()
 		g_ThemTableVoteIM:ResetInstances()
@@ -986,6 +1011,16 @@ function ResetDisplay( diploMessage )
 		end
 
 		----------------------------------------------------------------------------------
+		-- pocket technologies
+		----------------------------------------------------------------------------------
+		for techID, instance in pairs( g_UsPocketTechs ) do
+			instance.Button:SetHide( not TechTradeItem or not deal:IsPossibleToTradeItem( ourPlayerID, theirPlayerID, TechTradeItem, techID ) )
+		end
+		for techID, instance in pairs( g_ThemPocketTechs ) do
+			instance.Button:SetHide( not TechTradeItem or not deal:IsPossibleToTradeItem( theirPlayerID, ourPlayerID, TechTradeItem, techID ) )
+		end
+
+		----------------------------------------------------------------------------------
 		-- Votes
 		----------------------------------------------------------------------------------
 		if IsCiv5BNW then
@@ -1138,6 +1173,15 @@ function DisplayDeal(...)
 					end
 					g_UsPocketResources[ data1 ].Button:SetHide( true )
 					g_ThemPocketResources[ data1 ].Button:SetHide( true )
+				end
+
+			elseif TechTradeItem == itemType then
+				local instance = (isFromUs and g_UsTableTechs or g_ThemTableTechs)[ data1 ]
+				if instance then
+					instance.Container:SetHide( false )
+					;(isFromUs and Controls.UsTableTechnologyStack or Controls.ThemTableTechnologyStack):SetHide( false )
+					if g_UsPocketTechs[data1] then g_UsPocketTechs[data1].Button:SetHide( true ) end
+					if g_ThemPocketTechs[data1] then g_ThemPocketTechs[data1].Button:SetHide( true ) end
 				end
 
 			elseif IsCiv5BNW and TradeableItems.TRADE_ITEM_VOTE_COMMITMENT == itemType then
@@ -1904,6 +1948,38 @@ do
 end
 
 -----------------------------------------------------------------------------------------------------------------------
+-- Handle technology sales
+-----------------------------------------------------------------------------------------------------------------------
+do
+	local function AddTechTrade( playerID, techID )
+		g_Deal:AddTechTrade( playerID, techID )
+		return DoUIDealChangedByHuman()
+	end
+
+	local function RemoveTechTrade( techID )
+		g_Deal:RemoveTechTrade( techID )
+		return DoUIDealChangedByHuman( true )
+	end
+
+	local function AddTechInstance( tech, instanceName, stack, list, clickAction )
+		local instance = {}
+		ContextPtr:BuildInstanceForControl( instanceName, instance, stack )
+		instance.Button:SetText( L(tech.Description) )
+		instance.Button:SetToolTipString( L(tech.Help or tech.Description) )
+		instance.Button:SetVoid1( tech.ID )
+		instance.Button:RegisterCallback( Mouse.eLClick, clickAction )
+		list[ tech.ID ] = instance
+	end
+
+	for tech in GameInfo.Technologies() do
+		AddTechInstance( tech, "PocketTechnology", Controls.UsPocketTechnologyStack, g_UsPocketTechs, function(techID) AddTechTrade(g_iUs, techID) end )
+		AddTechInstance( tech, "PocketTechnology", Controls.ThemPocketTechnologyStack, g_ThemPocketTechs, function(techID) AddTechTrade(g_iThem, techID) end )
+		AddTechInstance( tech, "TableTechnology", Controls.UsTableTechnologyStack, g_UsTableTechs, RemoveTechTrade )
+		AddTechInstance( tech, "TableTechnology", Controls.ThemTableTechnologyStack, g_ThemTableTechs, RemoveTechTrade )
+	end
+end
+
+-----------------------------------------------------------------------------------------------------------------------
 -- Handle the strategic and luxury resources
 -----------------------------------------------------------------------------------------------------------------------
 do
@@ -2199,6 +2275,12 @@ for n, instance in pairs( g_UsTableResources ) do
 	insert( g_tableControls, instance.Container )
 end
 for n, instance in pairs( g_ThemTableResources ) do
+	insert( g_tableControls, instance.Container )
+end
+for n, instance in pairs( g_UsTableTechs ) do
+	insert( g_tableControls, instance.Container )
+end
+for n, instance in pairs( g_ThemTableTechs ) do
 	insert( g_tableControls, instance.Container )
 end
 for tradeableItem, controls in pairs( g_itemControls ) do

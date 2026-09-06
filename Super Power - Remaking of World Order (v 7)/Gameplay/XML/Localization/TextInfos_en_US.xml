@@ -19287,5 +19287,14 @@
 		<Row Tag="TXT_KEY_SP_CITY_STATE_HAS_UA">
 			<Text>[COLOR_CYAN]Unique Ability[ENDCOLOR]</Text>
 		</Row>
+		<Row Tag="TXT_KEY_DIPLO_ITEMS_TECHNOLOGIES">
+			<Text>[ICON_RESEARCH]Technologies</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DIPLO_TO_TRADE_TECHNOLOGIES_TRADE_YES">
+			<Text>Select a [ICON_RESEARCH]technology to sell to your vassal.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DIPLO_TO_TRADE_TECHNOLOGIES_TRADE_YES_THEM">
+			<Text>Select a [ICON_RESEARCH]technology to buy from your overlord.</Text>
+		</Row>
 	</Language_en_US>
 </GameData>

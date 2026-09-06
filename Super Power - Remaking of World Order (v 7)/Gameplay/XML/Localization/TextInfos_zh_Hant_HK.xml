@@ -17562,5 +17562,14 @@
 		<Row Tag="TXT_KEY_SP_CITY_STATE_HAS_UA">
 			<Text>[COLOR_CYAN]專屬UA[ENDCOLOR]</Text>
 		</Row>
+		<Row Tag="TXT_KEY_DIPLO_ITEMS_TECHNOLOGIES">
+			<Text>[ICON_RESEARCH]科技</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DIPLO_TO_TRADE_TECHNOLOGIES_TRADE_YES">
+			<Text>選擇一項可出售給附庸的[ICON_RESEARCH]科技。</Text>
+		</Row>
+		<Row Tag="TXT_KEY_DIPLO_TO_TRADE_TECHNOLOGIES_TRADE_YES_THEM">
+			<Text>選擇一項可從宗主購買的[ICON_RESEARCH]科技。</Text>
+		</Row>
 	</Language_zh_Hant_HK>
 </GameData>
